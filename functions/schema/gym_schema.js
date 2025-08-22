@@ -6,7 +6,7 @@ const gymInputSchema = z
   .object({
     gym_name: z.string().trim().min(1, "gym_name is required"),
     address: addressSchema.optional(),
-    gym_plans: z.string().trim().optional(),             
+    gym_plans: z.array(z.any()).default([]),             
     gym_members: z.array(z.any()).default([]),
     owner: z.string().trim().min(1, "owner is required"),
     contact_details: contactSchema.optional(),

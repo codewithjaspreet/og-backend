@@ -3,6 +3,7 @@
 
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { gymInputSchema } from '../schema/gym_schema.js';
+import { gymPlansInputSchema } from '../schema/gym_plans_schems.js';
 
 const addGym = async (req, res) => {
     try {
@@ -35,7 +36,7 @@ const addGym = async (req, res) => {
                 message: i.message,
             }));
             return res.status(400).json({
-                status: 400,
+                status: false,
                 error: "ValidationError",
                 details,
             });
@@ -45,7 +46,7 @@ const addGym = async (req, res) => {
         console.error("Error creating gym:", error);
         console.error("Error stack:", error.stack);
         return res.status(500).json({
-            status: 500,
+            status: false,
             error: "InternalServerError",
             message: "Failed to create gym",
             details: error.message
@@ -54,4 +55,54 @@ const addGym = async (req, res) => {
     }
 };
 
-export { addGym };
+const addGymPlans = async (req, res) => {
+
+    try{
+
+        const gymPlansCollection = getFirestore().collection("gym_plans");
+        const validatedData = gymPlansInputSchema.parse(req.body ?? {});
+
+        const gymPlansDocument = await gymPlansCollection.add(
+            {
+                created_at: FieldValue.serverTimestamp(),
+                updated_at: FieldValue.serverTimestamp(),
+                ...validatedData
+            }
+        );
+
+        return res.status(201).json({
+            status: true,
+            message: "Gym plans added successfully",
+            gym_plans_id: gymPlansDocument.id
+        })
+
+    }
+    catch(error){
+
+        if (error?.issues && Array.isArray(error.issues)) {
+            const details = error.issues.map((i) => ({
+                path: i.path.join("."),
+                message: i.message,
+            }));
+            return res.status(400).json({
+                status: false,
+                error: "ValidationError",
+                details,
+            });
+        }
+
+        console.error("Error creating gym plans:", error);
+        console.error("Error stack:", error.stack);
+        return res.status(500).json({
+            status: false,
+            error: "InternalServerError",
+            message: "Failed to create gym plans",
+            details: error.message
+        });
+
+    }
+}
+
+export { addGym ,addGymPlans };
+
+
