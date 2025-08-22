@@ -4,6 +4,7 @@
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { gymInputSchema } from '../schema/gym_schema.js';
 import { gymPlansInputSchema } from '../schema/gym_plans_schems.js';
+import { userSchema } from '../schema/user_schema.js';
 
 const addGym = async (req, res) => {
     try {
@@ -103,6 +104,51 @@ const addGymPlans = async (req, res) => {
     }
 }
 
-export { addGym ,addGymPlans };
+
+const addUser = async (req, res) => {
+
+    try{
+
+        const userCollection = getFirestore().collection("users");
+        const validatedData = userSchema.parse(req.body ?? {});
+
+        const userDocument = await userCollection.add(
+            {
+                created_at: FieldValue.serverTimestamp(),
+                ...validatedData
+
+
+            }
+        );
+
+        return res.status(201).json({
+            status: true,
+            message: "User added successfully",
+            user_id: userDocument.id
+        })
+
+    }
+    catch(error){
+
+        if (error?.issues && Array.isArray(error.issues)) {
+            const details = error.issues.map((i) => ({
+                path: i.path.join("."),
+                message: i.message,
+            }));
+        }
+
+        console.error("Error creating user:", error);
+        console.error("Error stack:", error.stack);
+        return res.status(500).json({
+            status: false,
+            error: "InternalServerError",
+            message: "Failed to create user",
+            details: error.message
+        });
+
+    }
+}
+
+export { addGym ,addGymPlans,addUser };
 
 
