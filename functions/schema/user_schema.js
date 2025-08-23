@@ -9,8 +9,8 @@ import { subscriptionSchema } from './subscription_schema.js';
 
 const userSchema = z
   .object({
-    active_gym: gymInputSchema,
-    active_gym_plan: gymPlansInputSchema,
+    active_gym: gymInputSchema.optional(),
+    active_gym_plan: gymPlansInputSchema.optional(),
     active_subscription_plan: subscriptionSchema,
     plan_name: z.string().trim().min(1, "plan_name is required"),
     check_in_time_today: z.coerce.date().optional(),
