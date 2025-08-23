@@ -5,12 +5,13 @@ import { measurementSchema } from './measurement_schema.js';
 import announcementSchema from './announcement_schema.js';
 import { gymInputSchema } from './gym_schema.js';
 import { gymPlansInputSchema } from './gym_plans_schema.js';
+import { subscriptionSchema } from './subscription_schema.js';
 
 const userSchema = z
   .object({
     active_gym: gymInputSchema,
     active_gym_plan: gymPlansInputSchema,
-    active_subscription_plan: z.string().trim().min(1, "active_subscription_plan is required"),
+    active_subscription_plan: subscriptionSchema,
     plan_name: z.string().trim().min(1, "plan_name is required"),
     check_in_time_today: z.coerce.date().optional(),
     check_out_time_today: z.coerce.date().optional(),
