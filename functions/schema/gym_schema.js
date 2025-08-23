@@ -8,7 +8,7 @@ const gymInputSchema = z
     address: addressSchema.optional(),
     gym_plans: z.array(z.any()).default([]),             
     gym_members: z.array(z.any()).default([]),
-    owner: z.string().trim().min(1, "owner is required"),
+    owner: z.string().trim().min(1, "owner is required").optional(),
     contact_details: contactSchema.optional(),
     gym_logo: z.string().trim().optional().default(""),
     is_active: z.boolean().optional().default(true),

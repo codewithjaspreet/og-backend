@@ -2,11 +2,14 @@ import { z } from 'zod';
 import { contactSchema } from './contact_schema.js';
 import { addressSchema } from './address_schema.js';
 import { measurementSchema } from './measurement_schema.js';
+import announcementSchema from './announcement_schema.js';
+import { gymInputSchema } from './gym_schema.js';
+import { gymPlansInputSchema } from './gym_plans_schema.js';
 
 const userSchema = z
   .object({
-    active_gym: z.string().trim().min(1, "gym_id is required"),
-    active_gym_plan: z.string().trim().min(1, "active_gym_plan is required"),
+    active_gym: gymInputSchema,
+    active_gym_plan: gymPlansInputSchema,
     active_subscription_plan: z.string().trim().min(1, "active_subscription_plan is required"),
     plan_name: z.string().trim().min(1, "plan_name is required"),
     check_in_time_today: z.coerce.date().optional(),
@@ -23,9 +26,9 @@ const userSchema = z
     role: z.enum(["Member", "Admin", "Staff", "Owner"]).optional(),
     address: addressSchema.optional(),
     measurements: measurementSchema.optional(),
-    announcements: z.array(z.string()).default([]),
+    announcements: z.array(announcementSchema).default([]).optional(),
   
   })
-  .strict({ message: "Unknown field in gym document" });
+  .strict({ message: "Unknown field in user document" });
 
 export { userSchema };
