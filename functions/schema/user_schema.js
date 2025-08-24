@@ -6,6 +6,7 @@ import announcementSchema from './announcement_schema.js';
 import { gymInputSchema } from './gym_schema.js';
 import { gymPlansInputSchema } from './gym_plans_schema.js';
 import { subscriptionSchema } from './subscription_schema.js';
+import { deviceInfoSchema } from './device_info_schema.js';
 
 const userSchema = z
   .object({
@@ -28,6 +29,7 @@ const userSchema = z
     address: addressSchema.optional(),
     measurements: measurementSchema.optional(),
     announcements: z.array(announcementSchema).default([]).optional(),
+    device_info: deviceInfoSchema.optional(),
   
   })
   .strict({ message: "Unknown field in user document" });
