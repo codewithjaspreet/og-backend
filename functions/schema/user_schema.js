@@ -12,7 +12,7 @@ const userSchema = z
     active_gym: gymInputSchema.optional(),
     active_gym_plan: gymPlansInputSchema.optional(),
     active_subscription_plan: subscriptionSchema,
-    plan_name: z.string().trim().min(1, "plan_name is required"),
+    plan_name: z.string().trim().min(1, "plan_name is required").optional(),
     check_in_time_today: z.coerce.date().optional(),
     check_out_time_today: z.coerce.date().optional(),
     is_fees_paid: z.boolean().optional().default(true),

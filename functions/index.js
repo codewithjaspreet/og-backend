@@ -1,7 +1,8 @@
 
 import { onRequest } from "firebase-functions/v2/https";
 import express from "express";
-import { addGym,addGymPlans, addUser } from "./admin/admin.js";
+import { addGym,addGymPlans } from "./admin/admin.js";
+import { addUser,getMemberListing ,getUserDetailing} from "./owner/owner.js";
 import cors from "cors";
 import morgan from "morgan";    
 import "./utils/utils.js"; // ensures app is initialized
@@ -24,6 +25,14 @@ app.post("/add-gym-plans", (req, res) => {
 
 app.post("/add-user", (req,res) =>{
     addUser(req, res);
+});
+
+app.get("/get-user-listing", (req,res) => {
+    getMemberListing(req, res);
+});
+
+app.get('/get-user-detailing', (req,res) => {
+    getUserDetailing(req, res);
 });
 
 export const api = onRequest(app);
