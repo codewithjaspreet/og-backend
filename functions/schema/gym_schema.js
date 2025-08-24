@@ -17,8 +17,10 @@ const gymInputSchema = z
     subscription_status: z.boolean().optional().default(true),
     subscription_plan: z.string().trim().optional(),
     announcements: z.array(z.any()).default([]),
+    gym_rules : z.array(z.any()).default([]),
     total_revenue: z.number().nonnegative().optional().default(0.0),
     revenue_this_month: z.number().nonnegative().optional().default(0.0),
+    
   })
   .strict({ message: "Unknown field in gym document" });
 
